@@ -55834,9 +55834,44 @@ var HomePage = (function () {
     function HomePage(navCtrl, geolocation) {
         this.navCtrl = navCtrl;
         this.geolocation = geolocation;
+        this.abierto = false;
+        this.tamanio = "90%";
+        this.ubicacionVal = 0;
+        this.radio = 500;
     }
+    HomePage.prototype.show = function () {
+        if (this.abierto == false) {
+            this.abierto = true;
+            this.tamanio = "50%";
+        }
+        else {
+            this.abierto = false;
+            this.tamanio = "90%";
+        }
+        this.getUserPosition();
+    };
     HomePage.prototype.ionViewDidEnter = function () {
         this.getUserPosition();
+    };
+    HomePage.prototype.ubicacion = function (val) {
+        this.ubicacionVal = val;
+        this.getUserPosition();
+    };
+    HomePage.prototype.radioB = function (val) {
+        if (val == 1) {
+            // SUMAR
+            if (this.radio <= 4900) {
+                this.radio += 100;
+                this.getUserPosition();
+            }
+        }
+        else {
+            // RESTAR
+            if (this.radio >= 200) {
+                this.radio -= 100;
+                this.getUserPosition();
+            }
+        }
     };
     HomePage.prototype.getUserPosition = function () {
         var _this = this;
@@ -55844,13 +55879,22 @@ var HomePage = (function () {
         this.geolocation.getCurrentPosition(this.options)
             .then(function (pos) {
             _this.currentPos = pos;
-            console.log(pos);
-            _this.addMap(pos.coords.latitude, pos.coords.longitude);
+            if (_this.ubicacionVal == 0) {
+                _this.addMap(19.3579779, -99.2803551);
+                _this.lat = 19.3579779;
+                _this.long = -99.2803551;
+            }
+            else if (_this.ubicacionVal == 1) {
+                _this.addMap(pos.coords.latitude, pos.coords.longitude);
+                _this.lat = pos.coords.latitude;
+                _this.long = pos.coords.longitude;
+            }
         }, function (err) {
             console.log("Error: " + err.message);
         });
     };
     HomePage.prototype.addMap = function (lat, long) {
+        var _this = this;
         var latLng = new google.maps.LatLng(lat, long);
         var mapOptions = {
             center: latLng,
@@ -55858,7 +55902,43 @@ var HomePage = (function () {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+        this.getPlace(latLng).then(function (results) {
+            _this.places = results;
+            for (var i = 0; i < results.length; i++) {
+                var distancia = _this.getDistancia(results[i].geometry.location.lat(), results[i].geometry.location.lng()).toFixed(2);
+                _this.places[i].distancia = distancia;
+                _this.createMarker(results[i]);
+                if (results[i].opening_hours) {
+                    _this.places[i].abierto = results[i].opening_hours.open_now;
+                }
+                else {
+                    _this.places[i].abierto = "";
+                }
+            }
+        }, function (status) {
+            _this.places = [];
+            console.log(status);
+        });
         this.addMarker();
+    };
+    HomePage.prototype.getDistancia = function (lat, long) {
+        var R = 6371000; // EARTH RADIUS EN METROS
+        var lat1 = this.lat;
+        var lon1 = this.long;
+        var lat2 = lat;
+        var lon2 = long;
+        var dLat = this.toRad((lat2 - lat1));
+        var dLon = this.toRad((lon2 - lon1));
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        return d;
+    };
+    HomePage.prototype.toRad = function (x) {
+        return x * Math.PI / 180;
     };
     HomePage.prototype.addMarker = function () {
         var _this = this;
@@ -55875,6 +55955,78 @@ var HomePage = (function () {
             infoWindow.open(_this.map, marker);
         });
     };
+    HomePage.prototype.getPlace = function (latLng) {
+        var service = new google.maps.places.PlacesService(this.map);
+        var request = {
+            location: latLng,
+            radius: this.radio,
+            // types: ["restaurant"]
+            name: "krispy kreme"
+        };
+        return new Promise(function (resolve, reject) {
+            service.nearbySearch(request, function (results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    resolve(results);
+                }
+                else {
+                    reject(status);
+                }
+            });
+        });
+    };
+    HomePage.prototype.getData = function (place) {
+        var service = new google.maps.places.PlacesService(this.map);
+        var request = {
+            placeId: place.place_id
+        };
+        var tel = "";
+        return new Promise(function (resolve, reject) {
+            service.getDetails(request, function (results, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    if (results.formatted_phone_number && results.international_phone_number) {
+                        tel = '<a href="tel:' + results.international_phone_number + '">' + results.formatted_phone_number + '</a>';
+                    }
+                    resolve(tel);
+                }
+                else {
+                    reject(status);
+                }
+            });
+        });
+    };
+    HomePage.prototype.createMarker = function (place) {
+        var _this = this;
+        var marker = new google.maps.Marker({
+            map: this.map,
+            animation: google.maps.Animation.DROP,
+            position: place.geometry.location
+        });
+        var abierto = "";
+        if (place.opening_hours) {
+            if (place.opening_hours.open_now === true) {
+                abierto = "Abierto";
+            }
+            else if (place.opening_hours.open_now === false) {
+                abierto = "Cerrado";
+            }
+        }
+        this.getData(place).then(function (results) {
+            var content = "<h3>" + place.name + "</h3><p>" + place.vicinity + "</p><small>" + abierto + " " + results + "</small>";
+            var infoWindow = new google.maps.InfoWindow({
+                content: content
+            });
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.open(_this.map, marker);
+            });
+        });
+    };
+    HomePage.prototype.ir = function (place) {
+        console.log(place);
+        this.ubicacionVal = 3;
+        this.lat = 18.3579779;
+        this.long = -98.2803551;
+        this.getUserPosition();
+    };
     return HomePage;
 }());
 __decorate([
@@ -55883,7 +56035,7 @@ __decorate([
 ], HomePage.prototype, "mapElement", void 0);
 HomePage = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
-        selector: 'page-home',template:/*ion-inline-start:"/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n\n    <ion-title>\n      Krispy Kremes cercanos\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="show()">\n        <ion-icon name="list"></ion-icon>\n        Krispy Kremes\n      </button>\n    </ion-buttons>\n\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <div #map id="map"></div>\n\n</ion-content>\n'/*ion-inline-end:"/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/src/pages/home/home.html"*/
+        selector: 'page-home',template:/*ion-inline-start:"/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n\n    <ion-title>\n      Krispy Kremes cercanos\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="show()">\n        <ion-icon name="list"></ion-icon>\n      </button>\n    </ion-buttons>\n\n    \n\n  </ion-navbar>\n  \n</ion-header>\n\n<ion-content padding>\n  <ion-toolbar>\n      <ion-buttons start>\n\n        <button ion-button icon-only (click)="radioB(1)">\n          <ion-icon name="add-circle"></ion-icon>\n        </button>\n        <button ion-button icon-only (click)="radioB(0)">\n          <ion-icon name="remove-circle"></ion-icon>\n        </button>\n      </ion-buttons>\n      <ion-title>Radio de búsqueda: {{radio}} m</ion-title>\n    </ion-toolbar>\n  \n  <div [style.height]="tamanio">\n    <div #map id="map"></div>\n  </div>\n\n  <div style="width : 100%; height: 60%" *ngIf="abierto == true">\n\n    <button ion-button icon-only clear (click)="ubicacion(0)">\n      <ion-icon name="refresh"></ion-icon>\n    </button>\n    <button ion-button outline (click)="ubicacion(1)">\n      Ubicación actual\n    </button>\n\n    <ion-list>\n      <ion-item *ngFor="let place of places">\n        <ion-avatar item-left>\n          <ion-icon name="pin"></ion-icon>\n        </ion-avatar>\n        <h2>{{place.name}}</h2>\n        <p>{{place.distancia}} m</p>\n        <p text-wrap>{{place.vicinity}}</p>\n        <p ion-text *ngIf="place.abierto === true" color="secondary">Abierto</p>\n        <p ion-text *ngIf="place.abierto === false" color="danger">Cerrado</p>\n      </ion-item>\n      <ion-item *ngIf="places.length == 0">\n        <h2>No hay Krispy Kremes cercanos</h2>\n      </ion-item>\n    </ion-list>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/src/pages/home/home.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */],
         __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */]])

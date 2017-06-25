@@ -2,7 +2,7 @@
 manifest
 ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:2:1-17:12
 	package
-		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:2:98-124
+		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:2:98-130
 		INJECTED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml
 		INJECTED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml
 	android:versionName
@@ -16,7 +16,7 @@ ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/pla
 		INJECTED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml
 		INJECTED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:2:125-183
+		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:2:131-189
 supports-screens
 ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:3:5-191
 	android:largeScreens
@@ -45,7 +45,7 @@ ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/pla
 		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:5:18-52
 	android:icon
 		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:5:53-80
-activity#io.ionic.starter.MainActivity
+activity#com.bixnia.krispykreme.MainActivity
 ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:6:9-11:20
 	android:label
 		ADDED from /Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/AndroidManifest.xml:6:97-134

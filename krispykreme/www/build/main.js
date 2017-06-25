@@ -56031,16 +56031,16 @@ var HomePage = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* ViewChild */])('map'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["s" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["s" /* ElementRef */]) === "function" && _a || Object)
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["s" /* ElementRef */])
 ], HomePage.prototype, "mapElement", void 0);
 HomePage = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
         selector: 'page-home',template:/*ion-inline-start:"/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n\n    <ion-title>\n      Krispy Kremes cercanos\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="show()">\n        <ion-icon name="list"></ion-icon>\n      </button>\n    </ion-buttons>\n\n    \n\n  </ion-navbar>\n  \n</ion-header>\n\n<ion-content padding>\n  <ion-toolbar>\n      <ion-buttons start>\n\n        <button ion-button icon-only (click)="radioB(1)">\n          <ion-icon name="add-circle"></ion-icon>\n        </button>\n        <button ion-button icon-only (click)="radioB(0)">\n          <ion-icon name="remove-circle"></ion-icon>\n        </button>\n      </ion-buttons>\n      <ion-title>Radio de búsqueda: {{radio}} m</ion-title>\n    </ion-toolbar>\n  \n  <div [style.height]="tamanio">\n    <div #map id="map"></div>\n  </div>\n\n  <div style="width : 100%; height: 60%" *ngIf="abierto == true">\n\n    <button ion-button icon-only clear (click)="ubicacion(0)">\n      <ion-icon name="refresh"></ion-icon>\n    </button>\n    <button ion-button outline (click)="ubicacion(1)">\n      Ubicación actual\n    </button>\n\n    <ion-list>\n      <ion-item *ngFor="let place of places">\n        <ion-avatar item-left>\n          <ion-icon name="pin"></ion-icon>\n        </ion-avatar>\n        <h2>{{place.name}}</h2>\n        <p>{{place.distancia}} m</p>\n        <p text-wrap>{{place.vicinity}}</p>\n        <p ion-text *ngIf="place.abierto === true" color="secondary">Abierto</p>\n        <p ion-text *ngIf="place.abierto === false" color="danger">Cerrado</p>\n      </ion-item>\n      <ion-item *ngIf="places.length == 0">\n        <h2>No hay Krispy Kremes cercanos</h2>\n      </ion-item>\n    </ion-list>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/src/pages/home/home.html"*/
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */],
+        __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */]])
 ], HomePage);
 
-var _a, _b, _c;
 //# sourceMappingURL=home.js.map
 
 /***/ }),

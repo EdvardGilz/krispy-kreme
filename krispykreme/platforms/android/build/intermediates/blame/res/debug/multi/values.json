@@ -11,14 +11,7 @@
                     "endOffset": 114
                 },
                 "from": {
-                    "file": "/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/res/values/strings.xml",
-                    "position": {
-                        "startLine": 4,
-                        "startColumn": 4,
-                        "startOffset": 157,
-                        "endColumn": 63,
-                        "endOffset": 216
-                    }
+                    "file": "/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/res/values/strings.xml"
                 }
             },
             {
@@ -26,8 +19,8 @@
                     "startLine": 3,
                     "startColumn": 4,
                     "startOffset": 119,
-                    "endColumn": 42,
-                    "endOffset": 157
+                    "endColumn": 48,
+                    "endOffset": 163
                 },
                 "from": {
                     "file": "/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/res/values/strings.xml",
@@ -35,8 +28,8 @@
                         "startLine": 2,
                         "startColumn": 4,
                         "startOffset": 55,
-                        "endColumn": 42,
-                        "endOffset": 93
+                        "endColumn": 48,
+                        "endOffset": 99
                     }
                 }
             },
@@ -44,19 +37,12 @@
                 "to": {
                     "startLine": 4,
                     "startColumn": 4,
-                    "startOffset": 162,
+                    "startOffset": 168,
                     "endColumn": 58,
-                    "endOffset": 216
+                    "endOffset": 222
                 },
                 "from": {
-                    "file": "/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/res/values/strings.xml",
-                    "position": {
-                        "startLine": 3,
-                        "startColumn": 4,
-                        "startOffset": 98,
-                        "endColumn": 58,
-                        "endOffset": 152
-                    }
+                    "file": "/Users/EdvardGilz/Documents/proyectosGit/krispy-kreme/KrispyKreme/platforms/android/res/values/strings.xml"
                 }
             }
         ]
