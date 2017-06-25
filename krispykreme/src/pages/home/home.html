@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar>
+
+    <ion-title>
+      Krispy Kremes cercanos
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="show()">
+        <ion-icon name="list"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    
+
+  </ion-navbar>
+  
+</ion-header>
+
+<ion-content padding>
+  <ion-toolbar>
+      <ion-buttons start>
+
+        <button ion-button icon-only (click)="radioB(1)">
+          <ion-icon name="add-circle"></ion-icon>
+        </button>
+        <button ion-button icon-only (click)="radioB(0)">
+          <ion-icon name="remove-circle"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>Radio de búsqueda: {{radio}} m</ion-title>
+    </ion-toolbar>
+  
+  <div [style.height]="tamanio">
+    <div #map id="map"></div>
+  </div>
+
+  <div style="width : 100%; height: 60%" *ngIf="abierto == true">
+
+    <button ion-button icon-only clear (click)="ubicacion(0)">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+    <button ion-button outline (click)="ubicacion(1)">
+      Ubicación actual
+    </button>
+
+    <ion-list>
+      <ion-item *ngFor="let place of places">
+        <ion-avatar item-left>
+          <ion-icon name="pin"></ion-icon>
+        </ion-avatar>
+        <h2>{{place.name}}</h2>
+        <p>{{place.distancia}} m</p>
+        <p text-wrap>{{place.vicinity}}</p>
+        <p ion-text *ngIf="place.abierto === true" color="secondary">Abierto</p>
+        <p ion-text *ngIf="place.abierto === false" color="danger">Cerrado</p>
+      </ion-item>
+      <ion-item *ngIf="places.length == 0">
+        <h2>No hay Krispy Kremes cercanos</h2>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>
